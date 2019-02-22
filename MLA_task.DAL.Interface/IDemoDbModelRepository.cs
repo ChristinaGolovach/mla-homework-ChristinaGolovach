@@ -9,8 +9,11 @@ namespace MLA_task.DAL.Interface
 {
     public interface IDemoDbModelRepository
     {
+        Task<IEnumerable<DemoDbModel>> GetAllAsync();
+
         Task<DemoDbModel> GetByIdAsync(int id);
 
-        Task<DemoCommonInfoDbModel> GetCommonInfoByDemoIdAsync(int demoDbModelId);
+        // почему этот метод здесь, если это репозитоий для DemoDbModel
+        Task<DemoCommonInfoDbModel> GetCommonInfoByDemoIdAsync(int demoDbModelId);        
     }
 }

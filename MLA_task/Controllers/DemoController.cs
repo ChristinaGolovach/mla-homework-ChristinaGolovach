@@ -23,12 +23,19 @@ namespace MLA_task.Controllers
             _demoModelService = demoModelService;
         }
 
-        //public async Task<IHttpActionResult> Get()
-        //{
-        //    var models = await _context.DemoDbModels.ToListAsync();
+        public async Task<IHttpActionResult> Get()
+        {
+            //var models = await _context.DemoDbModels.ToListAsync();
 
-        //    return Ok(models.Select(model => new { Id = model.Id, Name = model.Name, InfoId = model.DemoCommonInfoModelId, Info = model.DemoCommonInfoModel.CommonInfo }));
-        //}
+            //return Ok(models.Select(model => new { Id = model.Id, Name = model.Name, InfoId = model.DemoCommonInfoModelId, Info = model.DemoCommonInfoModel.CommonInfo }));
+
+            _logger.Info("receiving all DemoDbModels");
+
+            var models = await _demoModelService.GetAllDemoModelsAsync();
+
+            return Ok(models);
+           
+        }
 
         // GET: Demo
         public async Task<IHttpActionResult> Get(int id)

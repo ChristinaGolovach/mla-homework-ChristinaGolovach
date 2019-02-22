@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using MLA_task.DAL.EF;
@@ -14,6 +15,14 @@ namespace MLA_task.DAL.Repositories
         public DemoDbModelRepository(DemoContext context)
         {
             _context = context;
+        }
+
+        // TODO IOrderedEnumerable ???
+        public async Task<IEnumerable<DemoDbModel>> GetAllAsync()
+        {
+            var dbModels = await _context.DemoDbModels.Include(model => model.DemoCommonInfoModel).OrderBy( m => m.Id).ToListAsync();
+
+            return dbModels;
         }
 
         public async Task<DemoDbModel> GetByIdAsync(int id)
