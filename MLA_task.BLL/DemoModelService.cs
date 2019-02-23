@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MLA_task.BLL.Interface;
 using MLA_task.BLL.Interface.Exceptions;
+using DemoError = MLA_task.BLL.Interface.Exceptions.DemoServiceException.ErrorType;
 using MLA_task.BLL.Interface.Models;
 using MLA_task.DAL.Interface;
 using MLA_task.DAL.Interface.Entities;
@@ -31,12 +32,13 @@ namespace MLA_task.BLL
         public async Task<DemoModel> GetDemoModelByIdAsync(int id)
         {
             if (id == 23) {
-                throw new DemoServiceException(DemoServiceException.ErrorType.WrongId);
+                throw new DemoServiceException(DemoError.WrongId);
             }
 
             var dbModel = await _demoDbModelRepository.GetByIdAsync(id);
             var commonInfo = await _demoDbModelRepository.GetCommonInfoByDemoIdAsync(id);
 
+            //TODO mapping use here
             var demoModel = new DemoModel
             {
                 Id = dbModel.Id,
@@ -47,6 +49,16 @@ namespace MLA_task.BLL
             };
 
             return demoModel;
+        }
+
+        public Task<DemoModel> CraeteDemoModel(CreateUpdateDemoModel newDemoModel)
+        {
+            if (newDemoModel.Name == "bla-bla")
+            {
+                throw new DemoServiceException(DemoError.WrongName);
+            }
+
+            throw new NotImplementedException();
         }
     }
 }

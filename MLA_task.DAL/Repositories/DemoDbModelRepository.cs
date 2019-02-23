@@ -40,5 +40,14 @@ namespace MLA_task.DAL.Repositories
 
             return commonInfo;
         }
+
+        public async Task<DemoDbModel> AddDemoModelAsync(DemoDbModel newDemoModel)
+        {
+            _context.DemoDbModels.Add(newDemoModel);
+
+            await _context.SaveChangesAsync();
+
+            return newDemoModel;
+        }
     }
 }

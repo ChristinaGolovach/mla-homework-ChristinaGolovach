@@ -8,6 +8,8 @@ using System.Web.Http;
 using System.Web.Mvc;
 using MLA_task.BLL.Interface;
 using MLA_task.BLL.Interface.Exceptions;
+using DemoError = MLA_task.BLL.Interface.Exceptions.DemoServiceException.ErrorType;
+using MLA_task.BLL.Interface.Models;
 using NLog;
 
 namespace MLA_task.Controllers
@@ -52,7 +54,7 @@ namespace MLA_task.Controllers
             }
             catch (DemoServiceException ex)
             {
-                if (ex.Error == DemoServiceException.ErrorType.WrongId) 
+                if (ex.Error == DemoError.WrongId) 
                 {
                     _logger.Info(ex, $"Wrong ID {id} has been requested");
                     return this.BadRequest("Wrong ID");
@@ -67,24 +69,44 @@ namespace MLA_task.Controllers
             }
         }
 
-        //public async Task<IHttpActionResult> Post([FromBody]DemoModel model)
-        //{
-        //    _logger.Info($"adding model with name {model.Name}");
+        public async Task<IHttpActionResult> Post([FromBody]CreateUpdateDemoModel model)
+        {
+            _logger.Info($"adding model with name {model.Name}");
 
-        //    if (model.Name == "bla-bla") {
-        //        _logger.Info($"Wrong model name {model.Name} detected");
-        //        return this.BadRequest("WrongName");
-        //    }
+            if (model == null)
+            {
+                return BadRequest($"The {nameof(model)} can not be null");
+            }
 
-        //    try {
-        //        _context.DemoDbModels.Add(model);
-        //        await _context.SaveChangesAsync();
-        //    } catch (Exception ex) {
-        //        _logger.Error(ex, $"Server error occured while trying to add item with name {model.Name}");
-        //        return this.InternalServerError();
-        //    }
-           
-        //    return Ok();
-        //}
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var newModel = await _demoModelService.CraeteDemoModelAsync(model);
+
+                //return Created<DemoModel>(newModel);
+                return Ok(newModel);
+            }
+            catch (DemoServiceException exception)
+            {
+                if (exception.Error == DemoError.WrongName)
+                {
+                    _logger.Info($"Wrong model name {model.Name} detected");
+
+                    return BadRequest($"The wrong name {model.Name}.");
+                }
+
+                throw;
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception, $"Server error occured while trying to add item with name {model.Name}");
+
+                return InternalServerError();
+            }
+        }
     }
 }

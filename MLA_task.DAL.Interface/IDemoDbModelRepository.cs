@@ -14,6 +14,8 @@ namespace MLA_task.DAL.Interface
         Task<DemoDbModel> GetByIdAsync(int id);
 
         // почему этот метод здесь, если это репозитоий для DemoDbModel
-        Task<DemoCommonInfoDbModel> GetCommonInfoByDemoIdAsync(int demoDbModelId);        
+        Task<DemoCommonInfoDbModel> GetCommonInfoByDemoIdAsync(int demoDbModelId);
+
+        Task<DemoDbModel> AddDemoModelAsync(DemoDbModel newDemoModel);
     }
 }

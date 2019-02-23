@@ -23,9 +23,8 @@ namespace MLA_task.BLL.Interface.Exceptions
 
         public enum ErrorType
         {
-            WrongId
+            WrongId,
+            WrongName
         }
-    }
-
-    
+    }    
 }

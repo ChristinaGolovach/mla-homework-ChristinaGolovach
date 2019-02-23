@@ -8,6 +8,7 @@ namespace MLA_task.DAL.Interface.Entities
 
         public string Name { get; set; }
 
+        // see MLA_task.BLL.Interface.Models ???
         public DateTime Created { get; set; } = DateTime.UtcNow;
 
         public DateTime Modified { get; set; } = DateTime.UtcNow;
