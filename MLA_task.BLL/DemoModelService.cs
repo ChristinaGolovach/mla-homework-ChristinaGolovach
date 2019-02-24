@@ -59,7 +59,6 @@ namespace MLA_task.BLL
                 throw new DemoServiceException(DemoError.WrongName);
             }
 
-            // DemoDbModel demoDbModel =  await _demoDbModelRepository.AddDemoModelAsync(Mapper.Map<DemoDbModel>(newDemoModel));
             DemoDbModel demoDbModel = await _demoDbModelRepository.AddDemoModelAsync(Mapper.Map<CreateUpdateDemoModel,DemoDbModel>(newDemoModel));
 
             return Mapper.Map<DemoModel>(demoDbModel);

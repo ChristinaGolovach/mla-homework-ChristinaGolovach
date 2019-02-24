@@ -18,6 +18,8 @@ namespace MLA_task.DAL.EF
         {
             modelBuilder.Configurations.Add(new DemoDbModelConfig());
 
+            modelBuilder.Configurations.Add(new DemoCommonInfoDbModelConfig());
+
             base.OnModelCreating(modelBuilder);
         }
     }

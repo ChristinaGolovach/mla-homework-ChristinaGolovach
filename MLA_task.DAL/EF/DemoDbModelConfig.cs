@@ -15,7 +15,7 @@ namespace MLA_task.DAL.EF
             Property(m => m.Created).IsRequired();//.HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);
             Property(m => m.Modified).IsOptional();
             Property(m => m.DemoCommonInfoModelId).IsRequired();
-            HasRequired(m => m.DemoCommonInfoModel).WithMany(i => i.DemoModels).HasForeignKey( i=> i.DemoCommonInfoModelId);
+            HasRequired(m => m.DemoCommonInfoModel).WithMany(i => i.DemoModels).HasForeignKey(i => i.DemoCommonInfoModelId);
         }
     }
 }

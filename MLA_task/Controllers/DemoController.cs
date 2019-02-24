@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web.Mvc;
 using MLA_task.BLL.Interface;
 using MLA_task.BLL.Interface.Exceptions;
 using DemoError = MLA_task.BLL.Interface.Exceptions.DemoServiceException.ErrorType;
@@ -16,7 +12,6 @@ using NLog;
 
 namespace MLA_task.Controllers
 {
-    //[RoutePrefix("api/models")]
     public class DemoController : ApiController
     {
         private readonly ILogger _logger;
