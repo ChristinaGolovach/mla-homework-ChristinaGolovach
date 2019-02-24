@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity.ModelConfiguration;
+using System.ComponentModel.DataAnnotations.Schema;
 using MLA_task.DAL.Interface.Entities;
 
 namespace MLA_task.DAL.EF
@@ -9,6 +10,7 @@ namespace MLA_task.DAL.EF
         {
             ToTable("DemoCommonInfoTable");
             HasKey(m => m.Id);
+            Property(m => m.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             Property(m => m.CommonInfo).IsRequired().IsUnicode().HasMaxLength(50).IsVariableLength();
         }
     }

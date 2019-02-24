@@ -16,6 +16,7 @@ using NLog;
 
 namespace MLA_task.Controllers
 {
+    //[RoutePrefix("api/models")]
     public class DemoController : ApiController
     {
         private readonly ILogger _logger;

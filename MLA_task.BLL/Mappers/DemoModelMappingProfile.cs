@@ -18,7 +18,11 @@ namespace MLA_task.BLL.Mappers
 
             CreateMap<DemoDbModel, CreateUpdateDemoModel>();
 
-            CreateMap<CreateUpdateDemoModel, DemoDbModel>();
+            CreateMap<CreateUpdateDemoModel, DemoDbModel>()
+                .ForMember(dbModel => dbModel.Modified, opt => opt.MapFrom(p => DateTime.UtcNow))
+                .ForMember(dbModel => dbModel.Created, model => model.Ignore())
+                .ForMember(dbModel => dbModel.Id, model => model.Ignore())
+                .ForAllOtherMembers(dbModel => dbModel.Ignore());         
         }
     }
 }
