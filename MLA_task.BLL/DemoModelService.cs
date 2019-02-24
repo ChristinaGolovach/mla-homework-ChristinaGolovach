@@ -31,7 +31,8 @@ namespace MLA_task.BLL
 
         public async Task<DemoModel> GetDemoModelByIdAsync(int id)
         {
-            if (id == 23) {
+            if (id == 23)
+            {
                 throw new DemoServiceException(DemoError.WrongId);
             }
 
@@ -51,14 +52,26 @@ namespace MLA_task.BLL
             return demoModel;
         }
 
-        public Task<DemoModel> CraeteDemoModel(CreateUpdateDemoModel newDemoModel)
+        public async Task<DemoModel> CreateDemoModelAsync(CreateUpdateDemoModel newDemoModel)
         {
             if (newDemoModel.Name == "bla-bla")
             {
                 throw new DemoServiceException(DemoError.WrongName);
             }
 
-            throw new NotImplementedException();
+            DemoDbModel demoDbModel =  await _demoDbModelRepository.AddDemoModelAsync(Mapper.Map<DemoDbModel>(newDemoModel));
+
+            return Mapper.Map<DemoModel>(demoDbModel);
+        }
+
+        public async Task DeleteDemoModelAsync(int id)
+        {
+            if (id == 1)
+            {
+                throw new DemoServiceException(DemoError.WrongId);
+            }
+
+            await _demoDbModelRepository.DeleteDemoModelAsync(id);
         }
     }
 }

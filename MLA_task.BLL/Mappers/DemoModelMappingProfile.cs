@@ -16,8 +16,9 @@ namespace MLA_task.BLL.Mappers
             CreateMap<DemoDbModel, DemoModel>()
                 .ForMember(demoModel => demoModel.CommonInfo, opt => opt.MapFrom(src => src.DemoCommonInfoModel.CommonInfo));
 
-           // CreateMap<DemoDbModel, CreateUpdateDemoModel>()
-              //  .
+            CreateMap<DemoDbModel, CreateUpdateDemoModel>();
+
+            CreateMap<CreateUpdateDemoModel, DemoDbModel>();
         }
     }
 }

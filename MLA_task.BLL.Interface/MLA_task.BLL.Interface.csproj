@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Exceptions\DemoServiceException.cs" />
     <Compile Include="IDemoModelService.cs" />
+    <Compile Include="Models\CreateUpdateDemoModel.cs" />
     <Compile Include="Models\DemoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

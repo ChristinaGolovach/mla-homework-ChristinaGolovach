@@ -17,5 +17,7 @@ namespace MLA_task.DAL.Interface
         Task<DemoCommonInfoDbModel> GetCommonInfoByDemoIdAsync(int demoDbModelId);
 
         Task<DemoDbModel> AddDemoModelAsync(DemoDbModel newDemoModel);
+
+        Task DeleteDemoModelAsync(int id);
     }
 }

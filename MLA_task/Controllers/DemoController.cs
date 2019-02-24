@@ -4,6 +4,8 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 using System.Web.Mvc;
 using MLA_task.BLL.Interface;
@@ -31,7 +33,7 @@ namespace MLA_task.Controllers
 
             //return Ok(models.Select(model => new { Id = model.Id, Name = model.Name, InfoId = model.DemoCommonInfoModelId, Info = model.DemoCommonInfoModel.CommonInfo }));
 
-            _logger.Info("receiving all DemoDbModels");
+            _logger.Info("Receiving all DemoDbModels");
 
             var models = await _demoModelService.GetAllDemoModelsAsync();
 
@@ -42,13 +44,13 @@ namespace MLA_task.Controllers
         // GET: Demo
         public async Task<IHttpActionResult> Get(int id)
         {
-            _logger.Info($"receiving item with id {id}");
+            _logger.Info($"Receiving item with id {id}");
 
             try
             {
                 var model = await _demoModelService.GetDemoModelByIdAsync(id);
 
-                _logger.Info($"item with id {id} has been received.");
+                _logger.Info($"Item with id {id} has been received.");
 
                 return Ok(model);
             }
@@ -57,7 +59,7 @@ namespace MLA_task.Controllers
                 if (ex.Error == DemoError.WrongId) 
                 {
                     _logger.Info(ex, $"Wrong ID {id} has been requested");
-                    return this.BadRequest("Wrong ID");
+                    return BadRequest("Wrong ID");
                 }
 
                 throw;
@@ -65,13 +67,14 @@ namespace MLA_task.Controllers
             catch (Exception ex)
             {
                 _logger.Error(ex, $"Server error occured while trying to get item with id {id}");
-                return this.InternalServerError(ex);
+                return InternalServerError(ex);
             }
         }
 
+        //TODO change to filter
         public async Task<IHttpActionResult> Post([FromBody]CreateUpdateDemoModel model)
         {
-            _logger.Info($"adding model with name {model.Name}");
+            _logger.Info($"Adding model with name {model.Name}");
 
             if (model == null)
             {
@@ -85,7 +88,7 @@ namespace MLA_task.Controllers
 
             try
             {
-                var newModel = await _demoModelService.CraeteDemoModelAsync(model);
+                var newModel = await _demoModelService.CreateDemoModelAsync(model);
 
                 //return Created<DemoModel>(newModel);
                 return Ok(newModel);
@@ -107,6 +110,37 @@ namespace MLA_task.Controllers
 
                 return InternalServerError();
             }
+        }
+
+        //TODO filter
+        public async Task<IHttpActionResult> Delete([FromUri] int id)
+        {
+            _logger.Info($"Deleting model with {id}");
+
+            try
+            {
+                await _demoModelService.DeleteDemoModelAsync(id);
+
+                return ResponseMessage(Request.CreateResponse(HttpStatusCode.NoContent));
+            }
+            catch (DemoServiceException exception)
+            {
+                if (exception.Error == DemoError.WrongId)
+                {
+                    _logger.Info($"Wrong model id {id} detected");
+
+                    return BadRequest($"The wrong id {id}.");
+                }
+
+                throw;
+
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception, $"Server error occured while trying to delete item with id {id}");
+
+                return InternalServerError();
+            }       
         }
     }
 }

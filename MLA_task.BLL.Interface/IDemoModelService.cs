@@ -10,7 +10,8 @@ namespace MLA_task.BLL.Interface
 
         Task<IEnumerable<DemoModel>> GetAllDemoModelsAsync();
 
-        Task<DemoModel> CraeteDemoModelAsync(CreateUpdateDemoModel newDemoModel);
-       
+        Task<DemoModel> CreateDemoModelAsync(CreateUpdateDemoModel newDemoModel);
+
+        Task DeleteDemoModelAsync(int id);
     }
 }

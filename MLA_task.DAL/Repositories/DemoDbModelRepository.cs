@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -48,6 +49,21 @@ namespace MLA_task.DAL.Repositories
             await _context.SaveChangesAsync();
 
             return newDemoModel;
+        }
+
+        public async Task DeleteDemoModelAsync(int id)
+        {
+            var dbModel = await _context.DemoDbModels.FirstOrDefaultAsync(m => m.Id == id);
+
+            if (dbModel == null)
+            {
+                //TODO change to custom exception ??? - NotFound - or check maybe this not required.
+                throw new ArgumentException($"The model with id {id} not found");
+            }
+
+            _context.DemoDbModels.Remove(dbModel);
+
+            await _context.SaveChangesAsync();
         }
     }
 }
