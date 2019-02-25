@@ -37,19 +37,8 @@ namespace MLA_task.BLL
             }
 
             var dbModel = await _demoDbModelRepository.GetByIdAsync(id);
-            var commonInfo = await _demoDbModelRepository.GetCommonInfoByDemoIdAsync(id);
 
-            //TODO mapping use here
-            var demoModel = new DemoModel
-            {
-                Id = dbModel.Id,
-                Name = dbModel.Name,
-                Created = dbModel.Created,
-                Modified = dbModel.Modified,
-                CommonInfo = commonInfo.CommonInfo
-            };
-
-            return demoModel;
+            return Mapper.Map<DemoModel>(dbModel);
         }
 
         public async Task<DemoModel> CreateDemoModelAsync(CreateUpdateDemoModel newDemoModel)
@@ -59,7 +48,8 @@ namespace MLA_task.BLL
                 throw new DemoServiceException(DemoError.WrongName);
             }
 
-            DemoDbModel demoDbModel = await _demoDbModelRepository.AddDemoModelAsync(Mapper.Map<CreateUpdateDemoModel,DemoDbModel>(newDemoModel));
+            var dbModel = Mapper.Map<CreateUpdateDemoModel, DemoDbModel>(newDemoModel);
+            DemoDbModel demoDbModel = await _demoDbModelRepository.AddDemoModelAsync(dbModel);
 
             return Mapper.Map<DemoModel>(demoDbModel);
         }

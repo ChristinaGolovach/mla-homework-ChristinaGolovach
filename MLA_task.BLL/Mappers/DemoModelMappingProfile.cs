@@ -18,7 +18,7 @@ namespace MLA_task.BLL.Mappers
                 .ForMember(dbModel => dbModel.Modified, opt => opt.MapFrom(p => DateTime.UtcNow))
                 .ForMember(dbModel => dbModel.Created, model => model.Ignore())
                 .ForMember(dbModel => dbModel.Id, model => model.Ignore())
-                .ForAllOtherMembers(dbModel => dbModel.Ignore());         
+                .ForMember(dbModel => dbModel.DemoCommonInfoModel, model => model.Ignore());     
         }
     }
 }

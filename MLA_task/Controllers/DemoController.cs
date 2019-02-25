@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -24,17 +27,12 @@ namespace MLA_task.Controllers
         }
 
         public async Task<IHttpActionResult> Get()
-        {
-            //var models = await _context.DemoDbModels.ToListAsync();
-
-            //return Ok(models.Select(model => new { Id = model.Id, Name = model.Name, InfoId = model.DemoCommonInfoModelId, Info = model.DemoCommonInfoModel.CommonInfo }));
-
+        {          
             _logger.Info("Receiving all DemoDbModels");
 
             var models = await _demoModelService.GetAllDemoModelsAsync();
 
-            return Ok(models);
-           
+            return Ok(models);           
         }
 
         // GET: Demo
