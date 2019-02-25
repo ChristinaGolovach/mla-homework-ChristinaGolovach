@@ -2,7 +2,7 @@
   <h2>Demo Model List</h2>
   <table class="table table-nonfluid">
     <thead>
-      <th scope="col">#</th>
+      <th scope="col">Id</th>
       <th scope="col">Name</th>
       <th scope="col">CommonInfo</th>
     </thead>
@@ -10,9 +10,10 @@
       <tr *ngFor="let model of demoModels">
         <th scope="row">{{model.id}}</th>
         <th scope="row">{{model.name}}</th>
-        <th scope="row">{{model.commonInfo}}</th>        
+        <th scope="row">{{model.commonInfo}}</th>
+        <td></td>      
       </tr>
     </tbody>
-  </table>  
+  </table>   
 </div>
 

@@ -16,7 +16,7 @@ using NLog;
 
 namespace MLA_task.Controllers
 {
-   // [RoutePrefix("api/demo")]
+    [RoutePrefix("api/demo")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class DemoController : ApiController
     {
