@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using MLA_task.ExceptionFilters;
 
 namespace MLA_task
 {
@@ -10,7 +11,8 @@ namespace MLA_task
         public static void Register(HttpConfiguration config)
         {
             config.EnableCors();
-            // Web API configuration and services
+            config.Filters.Add(new DemoExceptionFilterAttribute());
+
 
             // Web API routes
             config.MapHttpAttributeRoutes();

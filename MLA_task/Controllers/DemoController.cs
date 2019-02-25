@@ -9,15 +9,15 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using MLA_task.BLL.Interface;
-using MLA_task.BLL.Interface.Exceptions;
-using DemoError = MLA_task.BLL.Interface.Exceptions.DemoServiceException.ErrorType;
 using MLA_task.BLL.Interface.Models;
+using MLA_task.ExceptionFilters;
 using NLog;
 
 namespace MLA_task.Controllers
 {
     [RoutePrefix("api/demo")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
+    [DemoExceptionFilter]
     public class DemoController : ApiController
     {
         private readonly ILogger _logger;
@@ -43,32 +43,14 @@ namespace MLA_task.Controllers
         {
             _logger.Info($"Receiving item with id {id}");
 
-            try
-            {
-                var model = await _demoModelService.GetDemoModelByIdAsync(id);
+            var model = await _demoModelService.GetDemoModelByIdAsync(id);
 
-                _logger.Info($"Item with id {id} has been received.");
+            _logger.Info($"Item with id {id} has been received.");
 
-                return Ok(model);
-            }
-            catch (DemoServiceException ex)
-            {
-                if (ex.Error == DemoError.WrongId) 
-                {
-                    _logger.Info(ex, $"Wrong ID {id} has been requested");
-                    return BadRequest("Wrong ID");
-                }
+            return Ok(model);           
 
-                throw;
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, $"Server error occured while trying to get item with id {id}");
-                return InternalServerError(ex);
-            }
         }
 
-        //TODO change to filter
         public async Task<IHttpActionResult> Post([FromBody]CreateUpdateDemoModel model)
         {
             _logger.Info($"Adding model with name {model.Name}");
@@ -83,61 +65,18 @@ namespace MLA_task.Controllers
                 return BadRequest(ModelState);
             }
 
-            try
-            {
-                var newModel = await _demoModelService.CreateDemoModelAsync(model);
+            var newModel = await _demoModelService.CreateDemoModelAsync(model);
 
-                //return Created<DemoModel>(newModel);
-                return Ok(newModel);
-            }
-            catch (DemoServiceException exception)
-            {
-                if (exception.Error == DemoError.WrongName)
-                {
-                    _logger.Info($"Wrong model name {model.Name} detected");
-
-                    return BadRequest($"The wrong name {model.Name}.");
-                }
-
-                throw;
-            }
-            catch (Exception exception)
-            {
-                _logger.Error(exception, $"Server error occured while trying to add item with name {model.Name}");
-
-                return InternalServerError();
-            }
+            return Ok(newModel);
         }
 
-        //TODO filter
         public async Task<IHttpActionResult> Delete([FromUri] int id)
         {
             _logger.Info($"Deleting model with {id}");
 
-            try
-            {
-                await _demoModelService.DeleteDemoModelAsync(id);
+            await _demoModelService.DeleteDemoModelAsync(id);
 
-                return ResponseMessage(Request.CreateResponse(HttpStatusCode.NoContent));
-            }
-            catch (DemoServiceException exception)
-            {
-                if (exception.Error == DemoError.WrongId)
-                {
-                    _logger.Info($"Wrong model id {id} detected");
-
-                    return BadRequest($"The wrong id {id}.");
-                }
-
-                throw;
-
-            }
-            catch (Exception exception)
-            {
-                _logger.Error(exception, $"Server error occured while trying to delete item with id {id}");
-
-                return InternalServerError();
-            }       
+            return ResponseMessage(Request.CreateResponse(HttpStatusCode.NoContent));           
         }
     }
 }
