@@ -14,6 +14,7 @@ export class DemoModelListComponent implements OnInit {
   constructor(private demoModelService: DemoModelService) { }
 
   ngOnInit() {
+    this.getDemoModel()
   }
 
   getDemoModel(){
